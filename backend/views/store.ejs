@@ -1,0 +1,137 @@
+<html>
+
+<head>
+    <title>Shoe Store</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script>var stripePublicKey = '<%=stripePublicKey%>'</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="store.js" defer></script>
+
+</head>
+
+<!-- Item List -->
+<div class="container-fluid">
+    <!-- Title -->
+    <div class="row align-items-center" style="
+    margin: 0 70px">
+        <div class="col">
+            <h1 class="title">
+                Shopping Bag
+            </h1>
+        </div>
+        <div class="col text-right" style="font-size: 24px;">
+            <div>
+                <i class="fas fa-shopping-cart position-relative">
+                    <span id="item-count" style="
+                        position: absolute;
+                        top: -3px;
+                        width: 20px;
+                        height: 20px;
+                        font-size: 17px;
+                        text-align: center;
+                        border-radius: 50%;
+                        color: red;
+                        left: 22px;
+                    "></span>
+                </i>
+            </div>
+        </div>
+    </div>
+    <!-- Product -->
+
+    <div class="row align-items-center justify-content-center">
+        <% items.shoes.forEach(function(item){ %>
+
+        <div class="col-sm-6" style="max-width: 230px;border: 1px solid #adadad;padding: 20px 0;">
+            <div class="row text-center">
+                <div class="col-sm">
+                    <div class="description">
+                        <span><%= item.name %></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-2">
+                <div class="col">
+                    <div class="image">
+                        <img src="<%= item.img %>" alt="" class="h-auto w-100" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center mt-2">
+                <div class="col-sm">
+
+                    <div class="price"><span>Price: </span>$<%= item.price / 100 %></div>
+                </div>
+            </div>
+            <div class="row text-center mt-2">
+                <div class="col-sm">
+                    <span>Quanitity: </span> <input class="item-amount" data-price="<%= item.price / 100 %>"
+                        type="number" id="<%= item.id %>" name="<%= item.name %>" min="1" max="10" value="1">
+                </div>
+            </div>
+            <div class="row text-center mt-3">
+                <div class="col ">
+                    <button class="btn btn-dark" onclick="addItemToCart()">Add To Cart</button>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+    <div class="row mt-5 justify-content-center">
+        <button id="checkout" type="button" class="btn btn-primary " data-toggle="modal" data-target="#modal"
+            onclick="generatePaymentIntent()" disabled>Checkout</button>
+    </div>
+</div>
+
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">Your Order</h5>
+                    <div id="order-summary"></div>
+                    <div id="total-cost"></div>
+                </div>
+                <div id="loading" class="d-none">Processing...</div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form">
+                <div class="modal-body">
+                    <div id="card-element">
+                        <!-- Elements will create input elements here -->
+                    </div>
+                    <!-- We'll put the error messages in this element -->
+                    <div id="card-errors" role="alert"></div>
+                    <div id="card-success-message" style="font-size: 14px;margin-top: 10px;"></div>
+                </div>
+                <div class="modal-footer">
+
+                    <input id="paymentButton" type="submit" value="Submit Payment" class="btn btn-primary" disabled>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+
+
+
+
+</html>

@@ -1,0 +1,10 @@
+{
+    "shoes": [
+        {
+            "id": "jordans",
+            "name": "Jordan Sneakers",
+            "price": 4900,
+            "img": "images/jordan.jpg"
+        }
+    ]
+}
